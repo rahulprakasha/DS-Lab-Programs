@@ -1,58 +1,66 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define QUE_SIZE 3
-int item,front=0,rear=-1,q[10];		
+#include<process.h>
+#define que_size 3
+int item,front=0,rear=-1,q[que_size],count=0;
 void insertrear()
-{if(rear==QUE_SIZE-1)
 {
-	printf("queue overflow\n");
-	return;
+	if(count==que_size)
+	{
+		printf("Queue overflow");
+		return;
+	}
+	rear=(rear+1)%que_size;
+	q[rear]=item;
+	count++;
 }
-rear=rear+1;
-q[rear]=item;
-}int deletefront()
-{if (front>rear)
-{front=0;
-rear=-1;
-return -1;
-}return q[front++];
-}void displayQ()
-{int i;
-if (front>rear)
+int deletefront()
 {
-	printf("queue is empty\n");
-	return;
+	if(count==0) return -1;
+	item = q[front];
+	front=(front+1)%que_size;
+	count=count-1;
+	return item;
 }
-printf("contents of queue\n");
-for(i=front;i<=rear;i++)
+void displayq()
 {
-	printf("%d\n",q[i]);
-}}
-int main()
+	int i,f;
+	if(count==0)
+	{
+		printf("Queue is empty");
+		return;
+	}
+	f=front;
+	printf("Contents of queue \n");
+	for(i=0;i<=count;i++)
+	{
+		printf("%d\n",q[f]);
+		f=(f+1)%que_size;
+	}
+}
+void main()
 {
 	int choice;
 	for(;;)
 	{
-		printf("1:insertrear 2:deletefront 3:display 4:exit\n");
-		printf("enter the choice\n");
+		printf("\n1.Insert rear 2.Delete front 3.Display 4.Exit \n");
+		printf("Enter the choice : ");
 		scanf("%d",&choice);
 		switch(choice)
 		{
-			case 1:printf("enter the item to be inserted\n");
-			scanf("%d",&item);
-			insertrear ();
-			break;
+			case 1:printf("Enter the item to be inserted :");
+			       scanf("%d",&item);
+			       insertrear();
+			       break;
 			case 2:item=deletefront();
-			if(item==-1)
-			printf("queue is empty\n");
-			else
-			printf("item deleted=%d\n",item);
-			break;
-			case 3:displayQ();
-			break;
-			default:exit (0);	
-			
+				   if(item==-1)
+				   printf("Queue is empty\n");
+				   else
+				   printf("Item deleted is %d \n",item);
+				   break;
+		    case 3:displayq();
+				   break;
+		    default:exit(0);		
 		}
-	
 	}
-	}
+}
